@@ -47,6 +47,30 @@ export default function AdminDashboard() {
     setLoading(false);
   };
 
+  // ==========================================
+  // دالة الحذف الجديدة (الزرار النووي ☢️)
+  // ==========================================
+  const handleDelete = async (id: any) => {
+    // 1. رسالة تأكيد للمستخدم عشان ميمسحش بالغلط
+    const isConfirmed = window.confirm("هل أنت متأكد من حذف هذا السجل نهائياً؟ 🗑️\nتنبيه: لا يمكن التراجع عن هذه الخطوة.");
+    if (!isConfirmed) return;
+
+    // 2. أمر الحذف لـ Supabase بناءً على التاب الحالي (الجدول)
+    const { error } = await supabase
+      .from(activeTab)
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting record:", error);
+      alert("❌ حدث خطأ أثناء الحذف، يرجى المحاولة مرة أخرى.");
+    } else {
+      // 3. تحديث الواجهة فوراً ومسح السطر المختار بدون Refresh
+      setRecords((prevRecords) => prevRecords.filter((record) => record.id !== id));
+    }
+  };
+  // ==========================================
+
   // شاشة تسجيل الدخول (لو لسه ما دخلش الباسورد)
   if (!isAuthenticated) {
     return (
@@ -117,6 +141,8 @@ export default function AdminDashboard() {
                     {activeTab === "suppliers" && <><th className="px-6 py-4">الشركة/المصنع</th><th className="px-6 py-4">الدولة</th><th className="px-6 py-4">الصفة</th><th className="px-6 py-4">المسؤول</th><th className="px-6 py-4">واتساب</th><th className="px-6 py-4">السودان؟</th></>}
                     {activeTab === "buyers" && <><th className="px-6 py-4">المحل/الشركة</th><th className="px-6 py-4">المدينة</th><th className="px-6 py-4">السيارات</th><th className="px-6 py-4">واتساب</th><th className="px-6 py-4">خبرة استيراد؟</th></>}
                     {activeTab === "logistics_partners" && <><th className="px-6 py-4">الشركة</th><th className="px-6 py-4">الخدمات</th><th className="px-6 py-4">مناطق العمل</th><th className="px-6 py-4">واتساب</th></>}
+                    {/* إضافة رأس عمود الإجراءات */}
+                    <th className="px-6 py-4 text-center">إجراءات</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -153,6 +179,16 @@ export default function AdminDashboard() {
                           <td className="px-6 py-4" dir="ltr">{record.whatsapp || record.phone}</td>
                         </>
                       )}
+
+                      {/* إضافة زرار الحذف في كل سطر */}
+                      <td className="px-6 py-4 text-center">
+                        <button
+                          onClick={() => handleDelete(record.id)}
+                          className="bg-red-100 hover:bg-red-600 text-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-all"
+                        >
+                          حذف 🗑️
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

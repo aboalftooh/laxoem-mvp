@@ -9,11 +9,11 @@ import { Inter, Cairo } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 const cairo = Cairo({ subsets: ['arabic'] });
 
-// 1. القاموس (النصوص نظيفة بدون فواصل)
+// 1. القاموس (تم إضافة نصوص الفوتر وتحديثها)
 const dictionaries = {
   en: {
     dir: "ltr",
-    navHome: "Home", navSupplier: "For Suppliers", navBuyer: "For Buyers", switchLang: "عربي", switchLink: "/ar/logistics",
+    navHome: "Home", navSupplier: "For Suppliers", navBuyer: "For Buyers", navLog: "Logistics", switchLang: "عربي", switchLink: "/ar/logistics",
     title: "Join laxOEM Logistics Network",
     desc: "We welcome applications from shipping companies clearance agencies and warehousing providers to build strong operational partnerships within the supply ecosystem.",
     sec1: "1. Company Details",
@@ -28,11 +28,17 @@ const dictionaries = {
     submitBtn: "Submit Partnership Request",
     sending: "Sending...",
     success: "✅ Partnership request received successfully We will contact you soon.",
-    error: "❌ Error submitting Please check your connection."
+    error: "❌ Error submitting Please check your connection.",
+    // نصوص الفوتر
+    footerDesc: "Connecting global suppliers to Sudan markets the gateway to Africa",
+    quickLinks: "Quick Links",
+    contactUs: "Contact Us",
+    footerEmail: "Email: partners@laxoem.com",
+    rights: "© 2026 laxOEM. All rights reserved."
   },
   ar: {
     dir: "rtl",
-    navHome: "الرئيسية", navSupplier: "للموردين", navBuyer: "للتجار", switchLang: "English", switchLink: "/en/logistics",
+    navHome: "الرئيسية", navSupplier: "للموردين", navBuyer: "للتجار", navLog: "شريك لوجستي", switchLang: "English", switchLink: "/en/logistics",
     title: "انضم كشريك لوجستي في laxOEM",
     desc: "نستقبل طلبات شركات الشحن التخليص والتخزين لبناء شراكات تشغيلية قوية داخل منظومة التوريد.",
     sec1: "1. بيانات الشركة",
@@ -47,7 +53,13 @@ const dictionaries = {
     submitBtn: "إرسال طلب الشراكة اللوجستية",
     sending: "جاري إرسال الطلب...",
     success: "✅ تم استلام طلب الشراكة بنجاح سيتم التواصل معكم قريباً.",
-    error: "❌ حدث خطأ أثناء الإرسال تأكد من اتصالك بالإنترنت."
+    error: "❌ حدث خطأ أثناء الإرسال تأكد من اتصالك بالإنترنت.",
+    // نصوص الفوتر
+    footerDesc: "ربط الموردين العالميين بأسواق السودان بوابة أفريقيا",
+    quickLinks: "روابط سريعة",
+    contactUs: "تواصل معنا",
+    footerEmail: "البريد الإلكتروني: partners@laxoem.com",
+    rights: "© 2026 laxOEM. جميع الحقوق محفوظة."
   }
 };
 
@@ -115,17 +127,17 @@ export default function LogisticsApplication() {
         </div>
       </header>
 
-      {/* الصورة العلوية (البانر البرتقالي) */}
-      <section className="relative w-full h-72 md:h-96 bg-cover bg-center flex flex-col items-center justify-center" style={{ backgroundImage: "url('/images/logistics-bg.jpg')" }}>
+      {/* الصورة العلوية (تم تعديل المسافات لتناسب الجوال) */}
+      <section className="relative w-full min-h-[20rem] md:min-h-[24rem] bg-cover bg-center flex flex-col items-center justify-center py-12 md:py-20" style={{ backgroundImage: "url('/images/logistics-bg.jpg')" }}>
         <div className="absolute inset-0 bg-orange-900/85 z-0"></div>
-        <div className="relative z-10 text-center px-4 mt-8">
+        <div className="relative z-10 text-center px-4 mt-4 pb-12 md:pb-16">
           <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">{t.title}</h1>
-          <p className="text-orange-100 text-lg md:text-xl max-w-2xl mx-auto drop-shadow-md">{t.desc}</p>
+          <p className="text-orange-100 text-lg md:text-xl max-w-2xl mx-auto drop-shadow-md leading-relaxed">{t.desc}</p>
         </div>
       </section>
 
-      {/* محتوى الفورمة */}
-      <div className="flex-grow flex items-start justify-center p-4 md:p-6 relative z-20 -mt-20 md:-mt-28 mb-12 w-full">
+      {/* محتوى الفورمة (تم تقليل التداخل في الجوال) */}
+      <div className="flex-grow flex items-start justify-center p-4 md:p-6 relative z-20 -mt-16 md:-mt-28 mb-12 w-full">
         <div className="max-w-4xl w-full bg-white p-6 md:p-10 rounded-2xl shadow-2xl border border-gray-100">
           <form onSubmit={handleSubmit} className="space-y-8 mt-2">
             
@@ -211,6 +223,49 @@ export default function LogisticsApplication() {
           </form>
         </div>
       </div>
+
+      {/* التذييل (Footer) المزروع جديد */}
+      <footer className="bg-slate-900 text-slate-300 py-12 px-6 border-t border-slate-800 mt-auto">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* العمود الأول: الشعار والوصف */}
+          <div>
+            <Link href={`/${lang}`} className="text-3xl font-black tracking-tighter mb-4 inline-block">
+              <span className="text-white">lax</span>
+              <span className="text-orange-500">OEM</span>
+            </Link>
+            <p className="text-slate-400 leading-relaxed mt-2 max-w-sm">
+              {t.footerDesc}
+            </p>
+          </div>
+
+          {/* العمود الثاني: روابط سريعة */}
+          <div>
+            <h4 className="text-white font-bold mb-4">{t.quickLinks}</h4>
+            <ul className="space-y-2">
+              <li><Link href={`/${lang}`} className="hover:text-orange-400 transition-colors">{t.navHome}</Link></li>
+              <li><Link href={`/${lang}/supplier`} className="hover:text-orange-400 transition-colors">{t.navSupplier}</Link></li>
+              <li><Link href={`/${lang}/buyer`} className="hover:text-orange-400 transition-colors">{t.navBuyer}</Link></li>
+              <li><Link href={`/${lang}/logistics`} className="hover:text-orange-400 transition-colors">{t.navLog}</Link></li>
+            </ul>
+          </div>
+
+          {/* العمود الثالث: معلومات التواصل */}
+          <div>
+            <h4 className="text-white font-bold mb-4">{t.contactUs}</h4>
+            <ul className="space-y-2 text-slate-400">
+              <li className="flex items-center gap-2">
+                <span>✉️</span> <a href="mailto:partners@laxoem.com" className="hover:text-orange-400 transition-colors">{t.footerEmail}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* خط النهاية والحقوق */}
+        <div className="max-w-6xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-slate-500 text-sm">
+          {t.rights}
+        </div>
+      </footer>
     </main>
   );
 }
